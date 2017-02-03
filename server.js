@@ -32,13 +32,6 @@ const options = {
             module: 'good-squeeze',
             name: 'Squeeze',
             args: [{ error: '*' }]
-        }, {
-            module: 'good-http',
-            args: ['http://prod.logs:3000', {
-                wreck: {
-                    headers: { 'x-api-key': 12345 }
-                }
-            }]
         }]
     }
 };
