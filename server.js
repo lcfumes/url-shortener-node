@@ -1,8 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
-const Joi = require('joi');
-const Urls = require('./models/urls.js');
+const UrlController = require('./controllers/urls.js');
 
 const server = new Hapi.Server();
 server.connection({ port: 3000, host: 'localhost' });
@@ -38,39 +37,6 @@ const options = {
     }
 };
 
-const urlCreateHandle = (request, reply) => {
-    Urls.create(request.payload, request.headers.user, (err, docs, created) => {
-        let response = {
-            total: 0,
-            _embedded: {}
-        }
-        if (docs !== null) {
-            response = {
-                total: docs.length,
-                _embedded: docs
-            }
-        }
-        let code = 201;
-        if (!created) {
-            code = 200;
-        }
-        reply(response).code(code);
-    });
-}
-
-const urlCreateConfig = {
-    handler: urlCreateHandle, 
-    validate: { 
-        payload: { 
-            url: Joi.string().min(1).required()
-        },
-        headers: Joi.object().keys({
-          'content-type': Joi.string().required().valid(['application/json']).default('application/json'),
-          'user':  Joi.string().min(1).required()
-        }).unknown()
-    }
-};
-
 server.register({
     register: require('good'),
     options: options
@@ -81,45 +47,19 @@ server.register({
         server.route({
             method: 'GET',
             path: '/',
-            handler: (request, reply) => {
-                Urls.findAll(docs => {
-                    let response = {
-                        total: docs.length,
-                        _embedded: docs
-                    }
-                    reply(response).code(200);
-                })
-            }
+            handler: UrlController.getAllUrl
         })
 
         server.route({
             method: 'GET',
             path: '/{url}',
-            handler: (request, reply) => {
-                Urls.findByHash(request.params.url, (err, docs) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        let response = {
-                            total: 0,
-                            _embedded: {}
-                        }
-                        if (docs !== null) {
-                            response = {
-                                total: docs.length,
-                                _embedded: docs
-                            }
-                        }
-                        reply(response).code(200);
-                    }
-                })
-            }
+            handler: UrlController.findUrl
         })
 
         server.route({
             method: 'POST',
             path: '/create',
-            config: urlCreateConfig
+            config: UrlController.urlCreateConfig
         })
 
         server.start(() => {
