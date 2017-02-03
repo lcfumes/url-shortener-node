@@ -39,7 +39,7 @@ const options = {
 };
 
 const urlCreateHandle = (request, reply) => {
-    Urls.create(request.payload, (err, docs) => {
+    Urls.create(request.payload, request.headers.user, (err, docs) => {
         let response = {
             total: 0,
             _embedded: {}
@@ -58,10 +58,13 @@ const urlCreateConfig = {
     handler: urlCreateHandle, 
     validate: { 
         payload: { 
-            user: Joi.string().min(1).required(), 
-            url: Joi.string().min(1).required(), 
-            slug: Joi.string().min(1).required(), 
-    } }
+            url: Joi.string().min(1).required()
+        },
+        headers: Joi.object().keys({
+          'content-type': Joi.string().required().valid(['application/json']).default('application/json'),
+          'user':  Joi.string().min(1).required()
+        }).unknown()
+    }
 };
 
 server.register({
@@ -89,7 +92,7 @@ server.register({
             method: 'GET',
             path: '/{url}',
             handler: (request, reply) => {
-                Urls.findSlug(request.params.url, (err, docs) => {
+                Urls.findByHash(request.params.url, (err, docs) => {
                     if (err) {
                         console.log(err);
                     } else {
