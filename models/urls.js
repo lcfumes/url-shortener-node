@@ -42,7 +42,7 @@ module.exports.create = (payload, user, callback) => {
     
     this.findByHash(hash, (err, doc) => {
         if (doc !== null) {
-            callback(err, doc);
+            callback(err, doc, false);
             return;
         }
         let url = new model({
@@ -54,7 +54,7 @@ module.exports.create = (payload, user, callback) => {
         url.save(err => {
             if (!err) {
                 this.findByHash(hash, (err, doc) => {
-                    callback(err, doc);
+                    callback(err, doc, true);
                 })
             }
         })

@@ -39,7 +39,7 @@ const options = {
 };
 
 const urlCreateHandle = (request, reply) => {
-    Urls.create(request.payload, request.headers.user, (err, docs) => {
+    Urls.create(request.payload, request.headers.user, (err, docs, created) => {
         let response = {
             total: 0,
             _embedded: {}
@@ -50,7 +50,11 @@ const urlCreateHandle = (request, reply) => {
                 _embedded: docs
             }
         }
-        reply(response).code(201);
+        let code = 201;
+        if (!created) {
+            code = 200;
+        }
+        reply(response).code(code);
     });
 }
 
