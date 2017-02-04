@@ -1,3 +1,15 @@
+lfum.es:
+    build: "./docker/"
+    ports:
+        - 3000:3000
+    volumes:
+        - ./:/app
+    environment:
+        - VIRTUAL_HOST=dev.lfum.es
+    tty: true
+    links:
+        - mongo:mongodb.dev
+
 mongo:
     image: mongo:latest
     ports:
