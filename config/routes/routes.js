@@ -13,7 +13,7 @@ module.exports = [
     },
     { 
     	method: 'POST', 
-    	path: '/create',
+    	path: '/',
         config: UrlController.urlCreateConfig
     },
     { 

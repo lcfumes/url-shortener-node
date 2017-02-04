@@ -43,11 +43,11 @@ module.exports.deleteUrl = (request, reply) => {
         if (err) {
             console.log(err);
         } else {
-            let code = 200;
+            let code = 204;
             if (!deleted) {
-                code = 204;
+                code = 404;
             }
-            reply({}).code(code);
+            reply().code(code);
         }
     })
 }
