@@ -1,12 +1,12 @@
 'use strict';
 
-const Urls = require('../models/urls.js');
+const UrlsModel = require('../models/UrlsModel.js');
 const Joi = require('joi');
-const EntityDocuments = require('../entities/url.js')
+const EntityDocuments = require('../entities/DocumentsEntity.js')
 
 module.exports.urlCreateHandle = (request, reply) => {
     let userIp = request.raw.req.connection.remoteAddress;
-    Urls.create(request.payload, userIp, (err, docs, created) => {
+    UrlsModel.create(request.payload, userIp, (err, docs, created) => {
         if (docs !== null) {
             EntityDocuments.setDocuments(docs)
         }
@@ -19,7 +19,7 @@ module.exports.urlCreateHandle = (request, reply) => {
 }
 
 module.exports.findUrl = (request, reply) => {
-    Urls.findByHash(request.params.url, (err, docs) => {
+    UrlsModel.findByHash(request.params.url, (err, docs) => {
         if (err) {
             console.log(err);
         } else {
@@ -32,14 +32,14 @@ module.exports.findUrl = (request, reply) => {
 }
 
 module.exports.getAllUrl = (request, reply) => {
-    Urls.findAll(docs => {
+    UrlsModel.findAll(docs => {
         EntityDocuments.setDocuments(docs)
         reply(EntityDocuments.getDocuments()).code(200);
     })
 }
 
 module.exports.deleteUrl = (request, reply) => {
-    Urls.deleteByHash(request.params.url, (err, deleted) => {
+    UrlsModel.deleteByHash(request.params.url, (err, deleted) => {
         if (err) {
             console.log(err);
         } else {
@@ -48,6 +48,20 @@ module.exports.deleteUrl = (request, reply) => {
                 code = 404;
             }
             reply().code(code);
+        }
+    })
+}
+
+module.exports.urlFindAndRedirect = (request, reply) => {
+    UrlsModel.findByHash(request.params.url, (err, docs) => {
+        if (!err) {
+            if (docs !== null) {
+                reply.redirect(docs.url).code(301);
+            } else {
+                reply().code(404);
+            }
+        } else {
+            reply().code(500);
         }
     })
 }
@@ -74,4 +88,8 @@ module.exports.urlFindAllConfig = {
 
 module.exports.urlDeleteConfig = {
     handler: this.deleteUrl
+}
+
+module.exports.urlFindAndRedirectConfig = {
+    handler: this.urlFindAndRedirect
 }

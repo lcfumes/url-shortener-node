@@ -1,4 +1,4 @@
-const UrlController = require('../../controllers/urls.js');
+const UrlController = require('../../controllers/UrlsController.js');
 
 module.exports = [
     { 
@@ -8,7 +8,7 @@ module.exports = [
     },
     { 
     	method: 'GET', 
-    	path: '/{url}', 
+    	path: '/detail/{url}', 
     	config: UrlController.urlFindConfig
     },
     { 
@@ -20,5 +20,10 @@ module.exports = [
         method: 'DELETE', 
         path: '/{url}', 
         config: UrlController.urlDeleteConfig
+    },
+    { 
+        method: 'GET', 
+        path: '/{url}', 
+        config: UrlController.urlFindAndRedirectConfig
     }
 ];
