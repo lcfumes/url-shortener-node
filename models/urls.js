@@ -6,9 +6,11 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://mongodb.dev/fumes');
 
 const urlScheme = {
-    user:String,
+    ip:String,
     url:String,
-    hash:String
+    hash:String,
+    created_at:Date,
+    updated_at:Date
 }
 
 let model = mongoose.model('Urls', urlScheme, 'url');
@@ -37,8 +39,8 @@ module.exports.findByFields = (object, callback) => {
     })
 }
 
-module.exports.create = (payload, user, callback) => {
-    let hash = sh.unique(payload.url.concat(user));
+module.exports.create = (payload, ip, callback) => {
+    let hash = sh.unique(payload.url.concat(ip));
     
     this.findByHash(hash, (err, doc) => {
         if (doc !== null) {
@@ -46,9 +48,11 @@ module.exports.create = (payload, user, callback) => {
             return;
         }
         let url = new model({
-            user: user,
+            ip: ip,
             url: payload.url,
-            hash: hash
+            hash: hash,
+            created_at: new Date().getTime(),
+            updated_at: new Date().getTime()
         });
 
         url.save(err => {

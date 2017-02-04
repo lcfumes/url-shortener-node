@@ -4,7 +4,8 @@ const Urls = require('../models/urls.js');
 const Joi = require('joi');
 
 module.exports.urlCreateHandle = (request, reply) => {
-    Urls.create(request.payload, request.headers.user, (err, docs, created) => {
+    let userIp = request.raw.req.connection.remoteAddress;
+    Urls.create(request.payload, userIp, (err, docs, created) => {
         let response = {
             total: 0,
             _embedded: {}
@@ -30,8 +31,7 @@ module.exports.urlCreateConfig = {
             url: Joi.string().min(1).required()
         },
         headers: Joi.object().keys({
-          'content-type': Joi.string().required().valid(['application/json']).default('application/json'),
-          'user':  Joi.string().min(1).required()
+          'content-type': Joi.string().required().valid(['application/json']).default('application/json')          
         }).unknown()
     }
 };
