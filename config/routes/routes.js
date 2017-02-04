@@ -17,6 +17,11 @@ module.exports = [
         config: UrlController.urlCreateConfig
     },
     { 
+        method: 'PUT', 
+        path: '/{hash}',
+        config: UrlController.urlUpdateConfig
+    },
+    { 
         method: 'DELETE', 
         path: '/{url}', 
         config: UrlController.urlDeleteConfig

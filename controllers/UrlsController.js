@@ -18,6 +18,20 @@ module.exports.urlCreateHandle = (request, reply) => {
     });
 }
 
+module.exports.urlUpdateHandle = (request, reply) => {
+    let userIp = request.raw.req.connection.remoteAddress;
+    UrlsModel.update(request, userIp, (err, docs, updated) => {
+        if (docs !== null) {
+            EntityDocuments.setDocuments(docs)
+        }
+        let code = 200;
+        if (!updated) {
+            code = 204;
+        }
+        reply(EntityDocuments.getDocuments()).code(code);
+    });
+}
+
 module.exports.findUrl = (request, reply) => {
     UrlsModel.findByHash(request.params.url, (err, docs) => {
         if (err) {
@@ -77,6 +91,18 @@ module.exports.urlCreateConfig = {
         }).unknown()
     }
 };
+
+module.exports.urlUpdateConfig = {
+    handler: this.urlUpdateHandle, 
+    validate: { 
+        payload: { 
+            url: Joi.string().min(1).required()
+        },
+        headers: Joi.object().keys({
+          'content-type': Joi.string().required().valid(['application/json']).default('application/json')          
+        }).unknown()
+    }
+}
 
 module.exports.urlFindConfig = {
     handler: this.findUrl

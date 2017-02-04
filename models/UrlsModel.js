@@ -65,6 +65,34 @@ module.exports.create = (payload, ip, callback) => {
     });
 }
 
+module.exports.update = (request, ip, callback) => {
+    let hash = sh.unique(request.payload.url.concat(ip.concat(new Date())));
+    let query = {'hash': request.params.hash};
+    let update = {
+            $set: {
+                ip: ip,
+                url: request.payload.url,
+                hash: hash,
+                updated_at: new Date().getTime()
+            }
+    };
+    this.findByHash(request.params.hash, (err, doc) => {
+        if (doc !== null) {
+            model.update(query, update, {multi: false}, (err, doc) => {
+                if (!err) {
+                    this.findByHash(hash, (err, doc) => {
+                        callback(err, doc, true);
+                    })
+                } else {
+                    console.log(err);
+                }
+            });
+        } else {
+            callback(null, [], false);
+        }
+    });
+}
+
 module.exports.deleteByHash = (hash, callback) => {
     this.findByHash(hash, (err, doc) => {
         if (doc === null) {
