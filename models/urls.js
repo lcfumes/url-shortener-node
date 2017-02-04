@@ -64,3 +64,15 @@ module.exports.create = (payload, ip, callback) => {
         })
     });
 }
+
+module.exports.deleteByHash = (hash, callback) => {
+    this.findByHash(hash, (err, doc) => {
+        if (doc === null) {
+            callback(err, false);
+            return;
+        }
+        model.remove({'hash': hash}, (err) => {
+            callback(err, true);
+        })
+    });
+}

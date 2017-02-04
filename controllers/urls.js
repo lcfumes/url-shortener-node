@@ -38,6 +38,20 @@ module.exports.getAllUrl = (request, reply) => {
     })
 }
 
+module.exports.deleteUrl = (request, reply) => {
+    Urls.deleteByHash(request.params.url, (err, deleted) => {
+        if (err) {
+            console.log(err);
+        } else {
+            let code = 200;
+            if (!deleted) {
+                code = 204;
+            }
+            reply({}).code(code);
+        }
+    })
+}
+
 module.exports.urlCreateConfig = {
     handler: this.urlCreateHandle, 
     validate: { 
@@ -57,3 +71,7 @@ module.exports.urlFindConfig = {
 module.exports.urlFindAllConfig = {
     handler: this.getAllUrl
 };
+
+module.exports.urlDeleteConfig = {
+    handler: this.deleteUrl
+}

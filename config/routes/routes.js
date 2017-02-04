@@ -15,5 +15,10 @@ module.exports = [
     	method: 'POST', 
     	path: '/create',
         config: UrlController.urlCreateConfig
+    },
+    { 
+        method: 'DELETE', 
+        path: '/{url}', 
+        config: UrlController.urlDeleteConfig
     }
 ];
