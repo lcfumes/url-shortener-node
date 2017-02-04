@@ -1,10 +1,12 @@
 'use strict';
 
 const Hapi = require('hapi');
-const UrlController = require('./controllers/urls.js');
+
 
 const server = new Hapi.Server();
 server.connection({ port: 3000, host: 'localhost' });
+
+const routes = require('./config/routes/routes.js')
 
 const options = {
     ops: {
@@ -44,23 +46,8 @@ server.register({
     if (err) {
         console.log(err);
     } else {
-        server.route({
-            method: 'GET',
-            path: '/',
-            handler: UrlController.getAllUrl
-        })
 
-        server.route({
-            method: 'GET',
-            path: '/{url}',
-            handler: UrlController.findUrl
-        })
-
-        server.route({
-            method: 'POST',
-            path: '/create',
-            config: UrlController.urlCreateConfig
-        })
+        server.route(routes);
 
         server.start(() => {
             console.log(`Server running at: ${server.info.uri}`);

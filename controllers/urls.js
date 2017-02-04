@@ -2,26 +2,40 @@
 
 const Urls = require('../models/urls.js');
 const Joi = require('joi');
+const EntityDocuments = require('../entities/url.js')
 
 module.exports.urlCreateHandle = (request, reply) => {
     let userIp = request.raw.req.connection.remoteAddress;
     Urls.create(request.payload, userIp, (err, docs, created) => {
-        let response = {
-            total: 0,
-            _embedded: {}
-        }
         if (docs !== null) {
-            response = {
-                total: docs.length,
-                _embedded: docs
-            }
+            EntityDocuments.setDocuments(docs)
         }
         let code = 201;
         if (!created) {
             code = 200;
         }
-        reply(response).code(code);
+        reply(EntityDocuments.getDocuments()).code(code);
     });
+}
+
+module.exports.findUrl = (request, reply) => {
+    Urls.findByHash(request.params.url, (err, docs) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (docs !== null) {
+                EntityDocuments.setDocuments(docs)
+            }
+            reply(EntityDocuments.getDocuments()).code(200);
+        }
+    })
+}
+
+module.exports.getAllUrl = (request, reply) => {
+    Urls.findAll(docs => {
+        EntityDocuments.setDocuments(docs)
+        reply(EntityDocuments.getDocuments()).code(200);
+    })
 }
 
 module.exports.urlCreateConfig = {
@@ -36,32 +50,10 @@ module.exports.urlCreateConfig = {
     }
 };
 
-module.exports.findUrl = (request, reply) => {
-    Urls.findByHash(request.params.url, (err, docs) => {
-        if (err) {
-            console.log(err);
-        } else {
-            let response = {
-                total: 0,
-                _embedded: {}
-            }
-            if (docs !== null) {
-                response = {
-                    total: docs.length,
-                    _embedded: docs
-                }
-            }
-            reply(response).code(200);
-        }
-    })
-}
+module.exports.urlFindConfig = {
+    handler: this.findUrl
+};
 
-module.exports.getAllUrl = (request, reply) => {
-    Urls.findAll(docs => {
-        let response = {
-            total: docs.length,
-            _embedded: docs
-        }
-        reply(response).code(200);
-    })
-}
+module.exports.urlFindAllConfig = {
+    handler: this.getAllUrl
+};
