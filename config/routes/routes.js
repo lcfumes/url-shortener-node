@@ -8,7 +8,7 @@ module.exports = [
     },
     { 
     	method: 'GET', 
-    	path: '/detail/{url}', 
+    	path: '/{url}', 
     	config: UrlController.urlFindConfig
     },
     { 
@@ -25,10 +25,5 @@ module.exports = [
         method: 'DELETE', 
         path: '/{url}', 
         config: UrlController.urlDeleteConfig
-    },
-    { 
-        method: 'GET', 
-        path: '/{url}', 
-        config: UrlController.urlFindAndRedirectConfig
     }
 ];
