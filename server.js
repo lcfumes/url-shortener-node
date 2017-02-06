@@ -2,11 +2,20 @@
 
 const Hapi = require('hapi');
 
-
 const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
-const routes = require('./config/routes/routes.js')
+const env = process.env.NODE_ENV;
+if (env == undefined) {
+    console.log("ENV not declared. Config file cannot be found.");
+    process.exit(1);
+}
+global.config = require('./config/config.' + env + '.json');
+
+global.database = require('mongoose');
+database.connect(config.database.connection);
+
+const routes = require('./config/routes/routes.js');
 
 const options = {
     ops: {

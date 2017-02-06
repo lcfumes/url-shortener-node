@@ -4,7 +4,10 @@
   "description": "",
   "author": "Luiz Fumes <lcfumes@gmail.com>",
   "main": "server.js",
-  "scripts": {},
+  "scripts": {
+    "dev":  "NODE_ENV=dev node server.js",
+    "live": "NODE_ENV=live node server.js"
+  },
   "dependencies": {
     "good": "^7.1.0",
     "good-console": "^6.2.0",

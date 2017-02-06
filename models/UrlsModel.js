@@ -2,18 +2,11 @@
 
 const sh = require("shorthash");
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://mongodb.dev/fumes');
+const urlSchema = require("../config/url.scheme.js");
 
-const urlScheme = {
-    ip:String,
-    url:String,
-    hash:String,
-    created_at:Date,
-    updated_at:Date
-}
+const urlScheme = urlSchema.urlSchema;
 
-let model = mongoose.model('Urls', urlScheme, 'url');
+let model = database.model('Urls', urlScheme, 'url');
 
 module.exports.findAll = callback => {
 	model.find((err, doc) => {
