@@ -33,7 +33,7 @@ module.exports.urlUpdateHandle = (request, reply) => {
 }
 
 module.exports.findUrl = (request, reply) => {
-    UrlsModel.findByHash(request.params.url, (err, docs) => {
+    UrlsModel.findByHash(request.params.hash, (err, docs) => {
         if (err) {
             console.log(err);
         } else {
@@ -53,7 +53,7 @@ module.exports.getAllUrl = (request, reply) => {
 }
 
 module.exports.deleteUrl = (request, reply) => {
-    UrlsModel.deleteByHash(request.params.url, (err, deleted) => {
+    UrlsModel.deleteByHash(request.params.hash, (err, deleted) => {
         if (err) {
             console.log(err);
         } else {
@@ -67,7 +67,7 @@ module.exports.deleteUrl = (request, reply) => {
 }
 
 module.exports.urlFindAndRedirect = (request, reply) => {
-    UrlsModel.findByHash(request.params.url, (err, docs) => {
+    UrlsModel.findByHash(request.params.hash, (err, docs) => {
         if (!err) {
             if (docs !== null) {
                 reply.redirect(docs.url).code(301);

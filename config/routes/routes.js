@@ -8,7 +8,7 @@ module.exports = [
     },
     { 
     	method: 'GET', 
-    	path: '/{url}', 
+    	path: '/{hash}', 
     	config: UrlController.urlFindConfig
     },
     { 
@@ -23,7 +23,7 @@ module.exports = [
     },
     { 
         method: 'DELETE', 
-        path: '/{url}', 
+        path: '/{hash}', 
         config: UrlController.urlDeleteConfig
     }
 ];
