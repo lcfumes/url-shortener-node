@@ -1,4 +1,44 @@
+The api is in:
+http://api.lfum.es
+
 Url Shortener - Backend Nodejs
+
+### Project ###
+
+Return all documents
+```
+GET /
+```
+
+Search document
+```
+GET /hash
+```
+
+Create a new document.
+```
+POST /
+Content-Type: application/json
+Body
+{
+    "url": "http://example.com.br"
+}
+```
+
+Update document
+```
+PUT /hash
+Content-Type: application/json
+Body
+{
+    "url": "http://example.com.br"
+}
+```
+Delete document
+```
+DELETE /hash
+```
+
 
 ### Dev machine ###
 
@@ -17,13 +57,13 @@ $ docker-compose up -d
 It's necessary create a config live file:
 
 ```
-./config/config.live.json
+config/config.live.json
 ```
 
 #### Run live project ####
 
 ```
-./npm run live
+npm run live
 ```
 
 If you're using supervisor, you can use this configuration:
