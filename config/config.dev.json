@@ -1,5 +1,5 @@
 {
     "database": {
-        "connection": "mongodb://127.0.0.1/lfumes"
+        "connection": "mongodb://mongodb.dev/lfumes"
     }
 }
