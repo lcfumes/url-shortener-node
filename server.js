@@ -3,7 +3,12 @@
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ 
+    port: 3000,
+    routes: { 
+        cors: true 
+    } 
+});
 
 const env = process.env.NODE_ENV;
 if (env == undefined) {
