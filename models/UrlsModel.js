@@ -9,11 +9,11 @@ const urlScheme = urlSchema.urlSchema;
 let model = database.model('Urls', urlScheme, 'url');
 
 module.exports.findAll = callback => {
-	model.find((err, doc) => {
-        if (!err) {
-		  callback(doc);
-        }
-	});
+	model.find({})
+    .sort({'created_at': 'desc'})
+    .exec(function(err, doc) {
+        callback(doc);
+    });
 }
 
 module.exports.findByUrl = (url, callback) => {
