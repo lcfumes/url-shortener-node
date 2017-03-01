@@ -10,6 +10,7 @@ let model = database.model('Urls', urlScheme, 'url');
 
 module.exports.findAll = callback => {
 	model.find({})
+    .limit(10)
     .sort({'created_at': 'desc'})
     .exec(function(err, doc) {
         callback(doc);
