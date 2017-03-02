@@ -7,28 +7,32 @@ const EntityDocuments = require('../entities/DocumentsEntity.js')
 module.exports.urlCreateHandle = (request, reply) => {
     let userIp = request.raw.req.connection.remoteAddress;
     UrlsModel.create(request.payload, userIp, (err, docs, created) => {
-        if (docs !== null) {
-            EntityDocuments.setDocuments(docs)
-        }
-        let code = 201;
-        if (!created) {
-            code = 200;
-        }
-        reply(EntityDocuments.getDocuments()).code(code);
+        UrlsModel.totalDocs((err, count) => {
+            if (docs !== null) {
+                EntityDocuments.setDocuments(docs, count)
+            }
+            let code = 201;
+            if (!created) {
+                code = 200;
+            }
+            reply(EntityDocuments.getDocuments()).code(code);
+        });
     });
 }
 
 module.exports.urlUpdateHandle = (request, reply) => {
     let userIp = request.raw.req.connection.remoteAddress;
     UrlsModel.update(request, userIp, (err, docs, updated) => {
-        if (docs !== null) {
-            EntityDocuments.setDocuments(docs)
-        }
-        let code = 200;
-        if (!updated) {
-            code = 204;
-        }
-        reply(EntityDocuments.getDocuments()).code(code);
+        UrlsModel.totalDocs((err, count) => {
+            if (docs !== null) {
+                EntityDocuments.setDocuments(docs, count)
+            }
+            let code = 200;
+            if (!updated) {
+                code = 204;
+            }
+            reply(EntityDocuments.getDocuments()).code(code);
+        });
     });
 }
 
@@ -37,12 +41,14 @@ module.exports.findUrl = (request, reply) => {
         if (err) {
             console.error(err);
         } else {
-            if (docs !== null) {
-                EntityDocuments.setDocuments(docs);
-                reply(EntityDocuments.getDocuments()).code(200);
-            } else {
-                reply({}).code(404);
-            }            
+            UrlsModel.totalDocs((err, count) => {
+                if (docs !== null) {
+                    EntityDocuments.setDocuments(docs, count);
+                    reply(EntityDocuments.getDocuments()).code(200);
+                } else {
+                    reply({}).code(404);
+                }
+            });        
         }
     })
 }
@@ -51,8 +57,10 @@ module.exports.getAllUrl = (request, reply) => {
     let limit = (!request.query.limit) ? 10 : request.query.limit;
     let page = (!request.query.page) ? 0 : request.query.page;
     UrlsModel.findAll(page, limit, docs => {
-        EntityDocuments.setDocuments(docs)
-        reply(EntityDocuments.getDocuments()).code(200);
+        UrlsModel.totalDocs((err, count) => {
+            EntityDocuments.setDocuments(docs, count)
+            reply(EntityDocuments.getDocuments()).code(200);
+        });
     })
 }
 
