@@ -38,9 +38,11 @@ module.exports.findUrl = (request, reply) => {
             console.error(err);
         } else {
             if (docs !== null) {
-                EntityDocuments.setDocuments(docs)
-            }
-            reply(EntityDocuments.getDocuments()).code(200);
+                EntityDocuments.setDocuments(docs);
+                reply(EntityDocuments.getDocuments()).code(200);
+            } else {
+                reply({}).code(404);
+            }            
         }
     })
 }
