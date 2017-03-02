@@ -29,6 +29,6 @@ module.exports = [
     {
         method: 'GET',
         path: '/redirect/{hash}',
-        config: UrlController.urlFindAndRedirect
+        config: UrlController.urlFindAndRedirectConfig
     }
 ];

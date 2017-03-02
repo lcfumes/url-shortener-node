@@ -35,7 +35,7 @@ module.exports.urlUpdateHandle = (request, reply) => {
 module.exports.findUrl = (request, reply) => {
     UrlsModel.findByHash(request.params.hash, (err, docs) => {
         if (err) {
-            console.log(err);
+            console.error(err);
         } else {
             if (docs !== null) {
                 EntityDocuments.setDocuments(docs)
@@ -55,7 +55,7 @@ module.exports.getAllUrl = (request, reply) => {
 module.exports.deleteUrl = (request, reply) => {
     UrlsModel.deleteByHash(request.params.hash, (err, deleted) => {
         if (err) {
-            console.log(err);
+            console.error(err);
         } else {
             let code = 204;
             if (!deleted) {
