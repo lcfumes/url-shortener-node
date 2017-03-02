@@ -72,7 +72,7 @@ module.exports.urlFindToRedirect = (request, reply) => {
     UrlsModel.findByHash(request.params.hash, (err, docs) => {
         if (!err) {
             if (docs !== null) {
-                reply.redirect(docs.url).code(301);
+                reply(docs.url).code(301);
             } else {
                 reply().code(404);
             }
