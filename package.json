@@ -5,7 +5,7 @@
   "author": "Luiz Fumes <lcfumes@gmail.com>",
   "main": "server.js",
   "scripts": {
-    "dev":  "NODE_ENV=dev node server.js",
+    "dev": "NODE_ENV=dev node server.js",
     "live": "NODE_ENV=live node server.js"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "hapi": "^16.1.0",
     "joi": "^10.2.1",
     "mongoose": "^4.8.1",
+    "request": "^2.79.0",
     "shorthash": "0.0.2"
   },
   "devDependencies": {}

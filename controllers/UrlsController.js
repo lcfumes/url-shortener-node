@@ -66,11 +66,11 @@ module.exports.deleteUrl = (request, reply) => {
     })
 }
 
-module.exports.urlFindAndRedirect = (request, reply) => {
+module.exports.urlFindToRedirect = (request, reply) => {
     UrlsModel.findByHash(request.params.hash, (err, docs) => {
         if (!err) {
             if (docs !== null) {
-                reply(docs.url).code(200);
+                reply.redirect(docs.url).code(301);
             } else {
                 reply().code(404);
             }
@@ -116,6 +116,6 @@ module.exports.urlDeleteConfig = {
     handler: this.deleteUrl
 }
 
-module.exports.urlFindAndRedirectConfig = {
-    handler: this.urlFindAndRedirect
+module.exports.urlFindToRedirectConfig = {
+    handler: this.urlFindToRedirect
 }
