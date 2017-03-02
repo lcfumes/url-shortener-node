@@ -6,6 +6,11 @@ module.exports = [
     	path: '/', 
     	config: UrlController.urlFindAllConfig
     },
+    {
+        method: 'GET',
+        path: '/total',
+        config: UrlController.urlGetTotalConfig
+    },
     { 
     	method: 'GET', 
     	path: '/{hash}', 

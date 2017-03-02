@@ -49,7 +49,8 @@ module.exports.findUrl = (request, reply) => {
 
 module.exports.getAllUrl = (request, reply) => {
     let limit = (!request.query.limit) ? 10 : request.query.limit;
-    UrlsModel.findAll(limit, docs => {
+    let page = (!request.query.page) ? 0 : request.query.page;
+    UrlsModel.findAll(page, limit, docs => {
         EntityDocuments.setDocuments(docs)
         reply(EntityDocuments.getDocuments()).code(200);
     })
@@ -79,6 +80,16 @@ module.exports.urlFindToRedirect = (request, reply) => {
             }
         } else {
             reply().code(500);
+        }
+    })
+}
+
+module.exports.urlGetTotal = (request, reply) => {
+    UrlsModel.totalDocs((err, count) => {
+        if (err) {
+            reply().code(500);
+        } else {
+            reply({total: count}).code(200);
         }
     })
 }
@@ -121,4 +132,8 @@ module.exports.urlDeleteConfig = {
 
 module.exports.urlFindToRedirectConfig = {
     handler: this.urlFindToRedirect
+}
+
+module.exports.urlGetTotalConfig = {
+    handler: this.urlGetTotal
 }
