@@ -25,5 +25,10 @@ module.exports = [
         method: 'DELETE', 
         path: '/{hash}', 
         config: UrlController.urlDeleteConfig
+    },
+    {
+        method: 'GET',
+        path: '/redirect/{hash}',
+        config: UrlController.urlFindAndRedirect
     }
 ];
