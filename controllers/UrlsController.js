@@ -48,7 +48,8 @@ module.exports.findUrl = (request, reply) => {
 }
 
 module.exports.getAllUrl = (request, reply) => {
-    UrlsModel.findAll(docs => {
+    let limit = (!request.query.limit) ? 10 : request.query.limit;
+    UrlsModel.findAll(limit, docs => {
         EntityDocuments.setDocuments(docs)
         reply(EntityDocuments.getDocuments()).code(200);
     })

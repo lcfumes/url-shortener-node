@@ -8,9 +8,8 @@ const urlScheme = urlSchema.urlSchema;
 
 let model = database.model('Urls', urlScheme, 'url');
 
-module.exports.findAll = callback => {
-	model.find({})
-    .limit(10)
+module.exports.findAll = (limit, callback) => {model.find({})
+    .limit(parseInt(limit))
     .sort({'created_at': 'desc'})
     .exec(function(err, doc) {
         callback(doc);
