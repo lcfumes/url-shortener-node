@@ -14,7 +14,9 @@ module.exports.totalDocs = callback => {
     })
 }
 
-module.exports.findAll = (page, limit, callback) => {model.find({})
+module.exports.findAll = (page, limit, callback) => {
+    page = (page > 0) ? page - 1 : page;
+    model.find({})
     .skip((parseInt(page) * parseInt(limit)))
     .limit(parseInt(limit))
     .sort({'created_at': 'desc'})
