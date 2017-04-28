@@ -1,5 +1,5 @@
 {
-    "database": {
-        "connection": "mongodb://mongodb.dev/lfumes"
-    }
+  "database": {
+    "connection": "mongodb://mongodb.dev/lfumes"
+  }
 }
