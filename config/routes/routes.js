@@ -1,4 +1,5 @@
 const UrlController = require('../../controllers/UrlsController.js');
+const UserController = require('../../controllers/UserController.js');
 
 module.exports = [
     { 
@@ -35,5 +36,10 @@ module.exports = [
         method: 'GET',
         path: '/redirect/{hash}',
         config: UrlController.urlFindToRedirectConfig
+    },
+    {
+        method: 'POST',
+        patch: '/user/create',
+        config: UserController.createUser
     }
 ];
