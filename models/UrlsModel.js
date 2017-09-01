@@ -24,7 +24,7 @@ module.exports.findAll = (page, limit, callback) => {model.find({})
 }
 
 module.exports.findByUrl = (url, callback) => {
-  this.findByHash(sh.unique(url), callback)
+  this.findByHash(sh.unique(url), callback);
 }
 
 module.exports.findByHash = (hash, callback) => {
@@ -70,10 +70,10 @@ module.exports.update = (request, ip, callback) => {
   let query = {'hash': request.params.hash};
   let update = {
     $set: {
-        ip: ip,
-        url: request.payload.url,
-        hash: hash,
-        updated_at: new Date().getTime()
+      ip: ip,
+      url: request.payload.url,
+      hash: hash,
+      updated_at: new Date().getTime()
     }
   };
   this.findByHash(request.params.hash, (err, doc) => {
